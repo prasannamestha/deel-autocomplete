@@ -74,30 +74,30 @@ export class AutocompleteInput extends React.PureComponent {
   };
 
   onKeyDown = (e) => {
+    const currentSggestions = this.getCurrentSuggestions();
+    const { activeSuggestionIndex } = this.state;
+
     if (e.keyCode === 13) {
       // enter key
-      this.setSearch(
-        this.getCurrentSuggestions()[this.state.activeSuggestionIndex]
-      );
+      this.setSearch(currentSggestions[activeSuggestionIndex]);
     } else if (e.keyCode === 38) {
       // up arrow
       e.preventDefault(); // prevents the cursor from going to the first position
-      if (this.state.activeSuggestionIndex > 0) {
-        this.setActiveSuggestionIndex(this.state.activeSuggestionIndex - 1);
+
+      if (activeSuggestionIndex > 0) {
+        this.setActiveSuggestionIndex(activeSuggestionIndex - 1);
       } else {
         // active suggestion is 0 or -1 - hence go to last sugggestion
-        const i = this.getCurrentSuggestions().length - 1;
+        const i = currentSggestions.length - 1;
         this.setActiveSuggestionIndex(i);
       }
     } else if (e.keyCode === 40) {
       // down arrow
       e.preventDefault(); // prevents the cursor from going to the last position
-      if (
-        this.state.activeSuggestionIndex <
-        this.getCurrentSuggestions().length - 1
-      ) {
+
+      if (activeSuggestionIndex < currentSggestions.length - 1) {
         // select next suggestion
-        this.setActiveSuggestionIndex(this.state.activeSuggestionIndex + 1);
+        this.setActiveSuggestionIndex(activeSuggestionIndex + 1);
       } else {
         // goto first suggestion
         this.setActiveSuggestionIndex(0);
